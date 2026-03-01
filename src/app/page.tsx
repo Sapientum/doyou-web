@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DataTable } from '@/components/DataTable';
 import { SupportDetail } from '@/components/SupportDetail';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const mockMessages = [
   {
@@ -50,25 +51,27 @@ export default function Home() {
   }));
 
   return (
-    <div className="flex w-full h-full bg-[var(--background)] overflow-hidden">
-      <Sidebar activeTab="support" />
+    <ProtectedRoute>
+      <div className="flex w-full h-full bg-[var(--background)] overflow-hidden">
+        <Sidebar activeTab="support" />
 
-      <main className="flex-1 h-full flex flex-col p-[32px] gap-[24px] overflow-auto">
-        {selectedMessageId && selectedMessage ? (
-          <SupportDetail
-            message={selectedMessage}
-            onBack={() => setSelectedMessageId(null)}
-          />
-        ) : (
-          <>
-            <h1 className="text-[32px] font-[600] text-[var(--foreground)] font-primary">
-              Support Messages
-            </h1>
+        <main className="flex-1 h-full flex flex-col p-[32px] gap-[24px] overflow-auto">
+          {selectedMessageId && selectedMessage ? (
+            <SupportDetail
+              message={selectedMessage}
+              onBack={() => setSelectedMessageId(null)}
+            />
+          ) : (
+            <>
+              <h1 className="text-[32px] font-[600] text-[var(--foreground)] font-primary">
+                Support Messages
+              </h1>
 
-            <DataTable columns={columns} data={tableData} />
-          </>
-        )}
-      </main>
-    </div>
+              <DataTable columns={columns} data={tableData} />
+            </>
+          )}
+        </main>
+      </div>
+    </ProtectedRoute>
   );
 }

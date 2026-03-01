@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DataTable } from '@/components/DataTable';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const mockPosts = [
     {
@@ -35,16 +36,18 @@ export default function FlaggedContentPage() {
     ]
 
     return (
-        <div className="flex w-full h-full bg-[var(--background)] overflow-hidden">
-            <Sidebar activeTab="flagged" />
+        <ProtectedRoute>
+            <div className="flex w-full h-full bg-[var(--background)] overflow-hidden">
+                <Sidebar activeTab="flagged" />
 
-            <main className="flex-1 h-full flex flex-col p-[32px] gap-[24px] overflow-auto">
-                <h1 className="text-[32px] font-[600] text-[var(--foreground)] font-primary">
-                    Flagged Content
-                </h1>
+                <main className="flex-1 h-full flex flex-col p-[32px] gap-[24px] overflow-auto">
+                    <h1 className="text-[32px] font-[600] text-[var(--foreground)] font-primary">
+                        Flagged Content
+                    </h1>
 
-                <DataTable columns={columns} data={mockPosts} />
-            </main>
-        </div>
+                    <DataTable columns={columns} data={mockPosts} />
+                </main>
+            </div>
+        </ProtectedRoute>
     );
 }

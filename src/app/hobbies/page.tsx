@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DataTable } from '@/components/DataTable';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const mockHobbies = [
     {
@@ -35,16 +36,18 @@ export default function ManageHobbiesPage() {
     ]
 
     return (
-        <div className="flex w-full h-full bg-[var(--background)] overflow-hidden">
-            <Sidebar activeTab="hobbies" />
+        <ProtectedRoute>
+            <div className="flex w-full h-full bg-[var(--background)] overflow-hidden">
+                <Sidebar activeTab="hobbies" />
 
-            <main className="flex-1 h-full flex flex-col p-[32px] gap-[24px] overflow-auto">
-                <h1 className="text-[32px] font-[600] text-[var(--foreground)] font-primary">
-                    Manage Hobbies
-                </h1>
+                <main className="flex-1 h-full flex flex-col p-[32px] gap-[24px] overflow-auto">
+                    <h1 className="text-[32px] font-[600] text-[var(--foreground)] font-primary">
+                        Manage Hobbies
+                    </h1>
 
-                <DataTable columns={columns} data={mockHobbies} />
-            </main>
-        </div>
+                    <DataTable columns={columns} data={mockHobbies} />
+                </main>
+            </div>
+        </ProtectedRoute>
     );
 }
