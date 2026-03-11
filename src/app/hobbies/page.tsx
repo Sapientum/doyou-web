@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DataTable } from '@/components/DataTable';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { fetchWithAuth } from '@/lib/api';
 
 interface Hobby {
     hobby_id: number;
@@ -23,12 +24,7 @@ export default function ManageHobbiesPage() {
     const fetchHobbies = async () => {
         try {
             setIsLoading(true);
-            const token = localStorage.getItem('adminAccessToken');
-            const response = await fetch('/api/hobbies', {
-                headers: {
-                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                }
-            });
+            const response = await fetchWithAuth('/api/hobbies');
             if (!response.ok) {
                 throw new Error('Failed to fetch hobbies');
             }
@@ -67,12 +63,10 @@ export default function ManageHobbiesPage() {
 
         try {
             setIsSubmitting(true);
-            const token = localStorage.getItem('adminAccessToken');
-            const response = await fetch('/api/hobbies', {
+            const response = await fetchWithAuth('/api/hobbies', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
                 },
                 body: JSON.stringify({ name: newHobbyName.trim() }),
             });
@@ -97,12 +91,8 @@ export default function ManageHobbiesPage() {
 
         try {
             setIsSubmitting(true);
-            const token = localStorage.getItem('adminAccessToken');
-            const response = await fetch(`/api/hobbies/${hobbyToDelete.hobby_id}`, {
+            const response = await fetchWithAuth(`/api/hobbies/${hobbyToDelete.hobby_id}`, {
                 method: 'DELETE',
-                headers: {
-                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                }
             });
 
             if (!response.ok) {

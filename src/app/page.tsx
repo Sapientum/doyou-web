@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { DataTable } from '@/components/DataTable';
 import { SupportDetail } from '@/components/SupportDetail';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { fetchWithAuth } from '@/lib/api';
 
 export interface SupportMessage {
   message_id: number;
@@ -30,12 +31,7 @@ export default function Home() {
   const fetchSupportMessages = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem('adminAccessToken');
-      const res = await fetch('/api/support', {
-        headers: {
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        }
-      });
+      const res = await fetchWithAuth('/api/support');
       if (res.ok) {
         const data = await res.json();
         setMessages(Array.isArray(data) ? data : (data.data || data.messages || []));
@@ -56,12 +52,8 @@ export default function Home() {
     setMessages(prev => prev.map(m => m.message_id === id ? { ...m, read: true } : m));
 
     try {
-      const token = localStorage.getItem('adminAccessToken');
-      await fetch(`/api/support/${id}/read`, {
+      await fetchWithAuth(`/api/support/${id}/read`, {
         method: 'PUT',
-        headers: {
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        }
       });
     } catch (error) {
       console.error("Failed to mark message as read", error);
